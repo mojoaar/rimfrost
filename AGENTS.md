@@ -34,6 +34,10 @@ building a second time, so a Ghostty palette is always the same bytes the OpenCo
 
 Run the first three together before calling any palette change done.
 
+The `test` script lists its files with a shell glob (`test/*.test.mjs`) instead of a `**` pattern
+because `node --test` only expands globs itself on newer Node — on Node 20 a quoted pattern is a
+literal path and the suite fails to start.
+
 ## Rules that are easy to get wrong
 
 **The three value types.** A hue *alias* (`hue.accent`) must be **whole-hue** — `"$hue.cyan"`,

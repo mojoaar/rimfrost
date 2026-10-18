@@ -4,7 +4,7 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "test": "node --test \"test/**/*.test.mjs\"",
+    "test": "node --test test/*.test.mjs",
     "build": "node src/build.mjs",
     "export": "node src/export.mjs && node src/export-ghostty.mjs",
     "export:ghostty": "node src/export-ghostty.mjs",
