@@ -11,6 +11,8 @@ import { join } from "node:path";
 import { fileURLToPath } from "node:url";
 import { exportAll } from "../src/export.mjs";
 import { exportGhostty } from "../src/export-ghostty.mjs";
+import { exportAlacritty } from "../src/export-alacritty.mjs";
+import { exportIterm } from "../src/export-iterm.mjs";
 import { HUES } from "../src/contract.mjs";
 import { render } from "../tools/preview.mjs";
 
@@ -21,10 +23,14 @@ const PALETTES = join(PROJECT_ROOT, "src", "palettes");
 const ROOT = mkdtempSync(join(tmpdir(), "rimfrost-export-"));
 const OPENCODE = join(ROOT, "opencode", "dist");
 const GHOSTTY = join(ROOT, "ghostty", "dist");
+const ALACRITTY = join(ROOT, "alacritty", "dist");
+const ITERM = join(ROOT, "iterm", "dist");
 const TOKENS = join(ROOT, "web", "dist", "tokens");
 const PREVIEW = join(ROOT, "web", "dist", "preview");
 const { themes, errors } = exportAll({ palettesDir: PALETTES, outDir: OPENCODE, tokensDir: TOKENS });
 exportGhostty({ themesDir: OPENCODE, outDir: GHOSTTY });
+exportAlacritty({ themesDir: OPENCODE, outDir: ALACRITTY });
+exportIterm({ themesDir: OPENCODE, outDir: ITERM });
 render({ tokensDir: TOKENS, outDir: PREVIEW });
 const tokens = JSON.parse(readFileSync(join(TOKENS, "tokens.json"), "utf8"));
 
@@ -102,6 +108,8 @@ test("dist/ holds exactly what a fresh build writes", () => {
     "web/dist/tokens/tokens.json",
     ...themes.map((name) => `web/dist/tokens/${name}.css`),
     ...themes.flatMap((name) => [`ghostty/dist/${cap(name)}`, `ghostty/dist/${cap(name)} Light`]),
+    ...themes.flatMap((name) => [`alacritty/dist/${name}.toml`, `alacritty/dist/${name}-light.toml`]),
+    ...themes.flatMap((name) => [`iterm/dist/${cap(name)}.json`, `iterm/dist/${cap(name)} Light.json`]),
     ...themes.map((name) => `web/dist/preview/${name}.html`),
     "web/dist/preview/index.html",
   ];

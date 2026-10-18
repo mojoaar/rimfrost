@@ -6,7 +6,7 @@
   "scripts": {
     "test": "node --test test/*.test.mjs",
     "build": "node src/build.mjs",
-    "export": "node src/export.mjs && node src/export-ghostty.mjs",
+    "export": "node src/export.mjs && node src/export-ghostty.mjs && node src/export-alacritty.mjs && node src/export-iterm.mjs",
     "export:ghostty": "node src/export-ghostty.mjs",
     "export:alacritty": "node src/export-alacritty.mjs",
     "export:iterm": "node src/export-iterm.mjs",
