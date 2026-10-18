@@ -107,9 +107,17 @@ test("the Guid is a reproducible UUIDv5, unique per file", () => {
 });
 
 test("no orange reaches a terminal: there is no ANSI slot for it", () => {
+  // The file is JSON, so an orange hex never appears literally — compare the
+  // components each colour key carries against the orange ramp's bytes.
   for (const file of readdirSync(outDir)) {
-    for (const step of Object.values(themefile(file)[mode(file)].hue.orange)) {
-      assert.ok(!body(file).includes(step), `${file} carries orange ${step}`);
+    const p = profile(file);
+    const orange = Object.values(themefile(file)[mode(file)].hue.orange).map(bytes);
+    for (const key of COLOURS) {
+      const [r, g, b] = components(p[key]);
+      assert.ok(
+        !orange.some(([ro, go, bo]) => ro === r && go === g && bo === b),
+        `${file} ${key} carries orange ${r},${g},${b}`,
+      );
     }
   }
 });

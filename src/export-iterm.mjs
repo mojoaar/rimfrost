@@ -132,7 +132,7 @@ function main() {
     outDir: join(PROJECT_ROOT, "iterm", "dist"),
   });
   for (const name of themes) console.log(`${name}: exported`);
-  for (const error of errors) console.log(error);
+  for (const error of errors) console.error(error);
   if (errors.length > 0) process.exitCode = 1;
 }
 

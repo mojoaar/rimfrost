@@ -6,9 +6,9 @@
 //
 // The input is the theme JSON the *OpenCode* target already ships
 // (`opencode/dist/<name>.json`), not a fresh build: `buildAll` has validated it
-// by then, and reading it back means both targets map the same bytes. That is
-// why `npm run export` chains the two exporters with `&&` — this one has
-// nothing to read unless `export.mjs` ran first.
+// by then, and reading it back means all four targets map the same bytes. That
+// is why `npm run export` chains the exporters with `&&` — these have nothing
+// to read unless `export.mjs` ran first.
 //
 // The mapping is data, not branches. Slots 1–6 are in ANSI order, and there is
 // no mode branch: the ramps already flip direction, so `.300` is the normal

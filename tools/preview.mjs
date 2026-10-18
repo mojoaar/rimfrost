@@ -96,7 +96,7 @@ ${panels.join("\n")}
  *
  * A module rather than a bare script so test/export.test.mjs can render into a
  * temp dir and byte-compare the committed pages against it, the same guard the
- * other three targets get.
+ * other four targets get.
  *
  * @param {{tokensDir?: string, outDir?: string}} [paths]
  * @returns {string[]} the page filenames written, theme pages first

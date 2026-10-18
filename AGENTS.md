@@ -59,8 +59,9 @@ schema error, not a default.
 
 **The steps flip per mode.** Dark `100` is lightest → `900` darkest; light is reversed. So
 `gray.300` stays "roughly this light" in both modes, and a per-mode override is only needed when
-a role genuinely differs. The Ghostty mapping leans on this: `300` is the normal ANSI colour and
-`200` the bright one in *both* modes, which is why brights are darker than normals in light mode.
+a role genuinely differs. The terminal mappings lean on this: `300` is the normal ANSI colour
+and `200` the bright one in *both* modes, which is why brights are darker than normals in light
+mode.
 
 **Adding a theme is one file** in `src/palettes/` — copy a neighbour and change the data. The
 tests pick it up automatically, and every target picks up the new theme on the next export.
