@@ -89,14 +89,18 @@ function summarize(built, errors) {
 }
 
 /**
- * CLI entry: build the real palettes into the opencode target's folder, install
- * if `--install`, and exit 1 when any palette failed. Summary goes to stdout,
- * errors to stderr.
+ * CLI entry: build the real palettes into the opencode target's folder (or
+ * `--out <dir>`), install if `--install`, and exit 1 when any palette failed.
+ * Summary goes to stdout, errors to stderr.
  */
 function main() {
+  // `--out` exists so the tests can drive this CLI without rewriting the
+  // committed output: a run that regenerates a stale file just before the
+  // fresh-build guard reads it would hide the staleness.
+  const at = process.argv.indexOf("--out");
   const { built, errors } = buildAll({
     palettesDir: join(PROJECT_ROOT, "src", "palettes"),
-    outDir: join(PROJECT_ROOT, "opencode", "dist"),
+    outDir: at === -1 ? join(PROJECT_ROOT, "opencode", "dist") : process.argv[at + 1],
     install: process.argv.includes("--install"),
   });
 

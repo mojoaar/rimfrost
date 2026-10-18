@@ -8,7 +8,7 @@
 
 import { mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
-import { fileURLToPath } from "node:url";
+import { fileURLToPath, pathToFileURL } from "node:url";
 
 const PROJECT_ROOT = fileURLToPath(new URL("..", import.meta.url));
 const TOKENS = join(PROJECT_ROOT, "web", "dist", "tokens");
@@ -21,8 +21,6 @@ const SUBTITLE = {
   nordlys: "night blue, aurora green",
   skumring: "grey-violet, quietest",
 };
-
-const { version, themes } = JSON.parse(readFileSync(join(TOKENS, "tokens.json"), "utf8"));
 
 const span = (style, text) => `<span style="${style}">${text}</span>`;
 
@@ -66,7 +64,7 @@ function panel(name, mode, t) {
 }
 
 /** A page: any panels given, with the pack version in the corner. */
-function page(title, panels) {
+function page(title, panels, version) {
   return `<!doctype html>
 <html lang="en"><head><meta charset="utf-8"><title>${title}</title>
 <style>
@@ -93,25 +91,48 @@ ${panels.join("\n")}
 `;
 }
 
-mkdirSync(OUT, { recursive: true });
+/**
+ * Render every theme page and the hero index into `outDir`.
+ *
+ * A module rather than a bare script so test/export.test.mjs can render into a
+ * temp dir and byte-compare the committed pages against it, the same guard the
+ * other three targets get.
+ *
+ * @param {{tokensDir?: string, outDir?: string}} [paths]
+ * @returns {string[]} the page filenames written, theme pages first
+ */
+export function render({ tokensDir = TOKENS, outDir = OUT } = {}) {
+  const { version, themes } = JSON.parse(readFileSync(join(tokensDir, "tokens.json"), "utf8"));
 
-const names = Object.keys(themes);
-const written = [];
+  mkdirSync(outDir, { recursive: true });
 
-for (const name of names) {
-  const html = page(
-    `rimfrost — ${name}`,
-    ["dark", "light"].map((mode) => panel(name, mode, themes[name][mode])),
+  const names = Object.keys(themes);
+  const written = [];
+
+  for (const name of names) {
+    const html = page(
+      `rimfrost — ${name}`,
+      ["dark", "light"].map((mode) => panel(name, mode, themes[name][mode])),
+      version,
+    );
+    writeFileSync(join(outDir, `${name}.html`), html);
+    written.push(`${name}.html`);
+  }
+
+  const hero = page(
+    "rimfrost",
+    names.flatMap((name) => ["dark", "light"].map((mode) => panel(name, mode, themes[name][mode]))),
+    version,
   );
-  writeFileSync(join(OUT, `${name}.html`), html);
-  written.push(`${name}.html`);
+  writeFileSync(join(outDir, "index.html"), hero);
+  written.push("index.html");
+
+  return written;
 }
 
-const hero = page(
-  "rimfrost",
-  names.flatMap((name) => ["dark", "light"].map((mode) => panel(name, mode, themes[name][mode]))),
-);
-writeFileSync(join(OUT, "index.html"), hero);
-written.push("index.html");
+function main() {
+  const written = render();
+  console.log(`wrote ${written.length} pages to ${OUT}: ${written.join(", ")}`);
+}
 
-console.log(`wrote ${written.length} pages to ${OUT}: ${written.join(", ")}`);
+if (import.meta.url === pathToFileURL(process.argv[1] ?? "").href) main();

@@ -12,6 +12,7 @@ import { fileURLToPath } from "node:url";
 import { exportAll } from "../src/export.mjs";
 import { exportGhostty } from "../src/export-ghostty.mjs";
 import { HUES } from "../src/contract.mjs";
+import { render } from "../tools/preview.mjs";
 
 const PROJECT_ROOT = fileURLToPath(new URL("..", import.meta.url));
 const PALETTES = join(PROJECT_ROOT, "src", "palettes");
@@ -21,8 +22,10 @@ const ROOT = mkdtempSync(join(tmpdir(), "rimfrost-export-"));
 const OPENCODE = join(ROOT, "opencode", "dist");
 const GHOSTTY = join(ROOT, "ghostty", "dist");
 const TOKENS = join(ROOT, "web", "dist", "tokens");
+const PREVIEW = join(ROOT, "web", "dist", "preview");
 const { themes, errors } = exportAll({ palettesDir: PALETTES, outDir: OPENCODE, tokensDir: TOKENS });
 exportGhostty({ themesDir: OPENCODE, outDir: GHOSTTY });
+render({ tokensDir: TOKENS, outDir: PREVIEW });
 const tokens = JSON.parse(readFileSync(join(TOKENS, "tokens.json"), "utf8"));
 
 const HEX6 = /^#[\da-f]{6}$/i;
@@ -99,12 +102,14 @@ test("dist/ holds exactly what a fresh build writes", () => {
     "web/dist/tokens/tokens.json",
     ...themes.map((name) => `web/dist/tokens/${name}.css`),
     ...themes.flatMap((name) => [`ghostty/dist/${cap(name)}`, `ghostty/dist/${cap(name)} Light`]),
+    ...themes.map((name) => `web/dist/preview/${name}.html`),
+    "web/dist/preview/index.html",
   ];
   for (const file of files) {
     assert.equal(
       readFileSync(join(PROJECT_ROOT, file), "utf8"),
       readFileSync(join(ROOT, file), "utf8"),
-      `${file} is stale — run: npm run export`,
+      `${file} is stale — run: npm run export && npm run preview`,
     );
   }
 });

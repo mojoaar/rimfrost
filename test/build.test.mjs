@@ -9,11 +9,15 @@ import { buildAll } from "../src/build.mjs";
 import { validateTheme } from "../src/validate.mjs";
 
 const root = fileURLToPath(new URL("..", import.meta.url));
-const distFile = join(root, "opencode", "dist", "fjord.json");
+// A temp dir rather than the committed opencode/dist: a test run must not
+// rewrite tracked output, because regenerating a stale file just before the
+// fresh-build guard reads it hides the staleness the guard exists to catch.
+const builtDir = mkdtempSync(join(tmpdir(), "rimfrost-build-"));
+const distFile = join(builtDir, "fjord.json");
 
 test("build writes a valid dist/fjord.json", () => {
   // Drive the CLI itself so the exit code is real, not a return value.
-  const run = spawnSync("node", ["src/build.mjs"], { cwd: root, encoding: "utf8" });
+  const run = spawnSync("node", ["src/build.mjs", "--out", builtDir], { cwd: root, encoding: "utf8" });
   assert.equal(run.status, 0, run.stderr);
   const theme = JSON.parse(readFileSync(distFile, "utf8"));
   for (const key of ["base", "light", "dark"]) {

@@ -96,10 +96,11 @@ takes `opencode/dist/fjord.json`, a Ghostty user takes `ghostty/dist/Fjord`, a w
 committed — `npm run export` rebuilds all three, and `npm run preview` then refreshes the preview
 pages.
 
-The test `dist/ holds exactly what a fresh build writes` byte-compares every committed file
-against a fresh build, so a forgotten `npm run export` fails the suite. Its `files` list is
-repo-root-relative (`opencode/dist/…`, `ghostty/dist/…`, `web/dist/tokens/…`): new output that is
-not added to that list is unwatched while the suite stays green.
+The test `dist/ holds exactly what a fresh build writes` byte-compares every committed build
+artifact against a fresh build, so a forgotten `npm run export` — or `npm run preview`, for the
+pages — fails the suite. Its `files` list is repo-root-relative (`opencode/dist/…`,
+`ghostty/dist/…`, `web/dist/tokens/…`, `web/dist/preview/…`): new output that is not added to that
+list is unwatched while the suite stays green.
 
 ## Do not touch
 
