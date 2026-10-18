@@ -10,6 +10,7 @@ import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { fileURLToPath } from "node:url";
 import { exportAll } from "../src/export.mjs";
+import { exportGhostty } from "../src/export-ghostty.mjs";
 import { HUES } from "../src/contract.mjs";
 
 const PROJECT_ROOT = fileURLToPath(new URL("..", import.meta.url));
@@ -18,8 +19,10 @@ const PALETTES = join(PROJECT_ROOT, "src", "palettes");
 // repo-relative one and the fresh-build guard only has to grow entries.
 const ROOT = mkdtempSync(join(tmpdir(), "rimfrost-export-"));
 const OPENCODE = join(ROOT, "opencode", "dist");
+const GHOSTTY = join(ROOT, "ghostty", "dist");
 const TOKENS = join(ROOT, "web", "dist", "tokens");
 const { themes, errors } = exportAll({ palettesDir: PALETTES, outDir: OPENCODE, tokensDir: TOKENS });
+exportGhostty({ themesDir: OPENCODE, outDir: GHOSTTY });
 const tokens = JSON.parse(readFileSync(join(TOKENS, "tokens.json"), "utf8"));
 
 const HEX6 = /^#[\da-f]{6}$/i;
@@ -90,10 +93,12 @@ test("ramps are every hue at all nine steps, per mode", () => {
 
 test("dist/ holds exactly what a fresh build writes", () => {
   // The build output is committed, so it can go stale silently: this is the guard.
+  const cap = (s) => s[0].toUpperCase() + s.slice(1);
   const files = [
     ...themes.map((name) => `opencode/dist/${name}.json`),
     "web/dist/tokens/tokens.json",
     ...themes.map((name) => `web/dist/tokens/${name}.css`),
+    ...themes.flatMap((name) => [`ghostty/dist/${cap(name)}`, `ghostty/dist/${cap(name)} Light`]),
   ];
   for (const file of files) {
     assert.equal(
