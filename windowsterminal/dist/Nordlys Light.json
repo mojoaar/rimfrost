@@ -1,0 +1,27 @@
+{
+  "schemes": [
+    {
+      "name": "Nordlys Light",
+      "black": "#dae5e1",
+      "red": "#77393f",
+      "green": "#2f6349",
+      "yellow": "#6d5b21",
+      "blue": "#2c5f80",
+      "purple": "#514173",
+      "cyan": "#22646f",
+      "white": "#465e56",
+      "brightBlack": "#94a9a1",
+      "brightRed": "#5d2c33",
+      "brightGreen": "#224c39",
+      "brightYellow": "#544619",
+      "brightBlue": "#1f4763",
+      "brightPurple": "#3e315d",
+      "brightCyan": "#174c57",
+      "brightWhite": "#1d2f29",
+      "background": "#dae5e1",
+      "foreground": "#1d2f29",
+      "cursorColor": "#2f6349",
+      "selectionBackground": "#c6d4cf"
+    }
+  ]
+}

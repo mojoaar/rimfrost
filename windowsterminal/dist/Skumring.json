@@ -1,0 +1,27 @@
+{
+  "schemes": [
+    {
+      "name": "Skumring",
+      "black": "#111218",
+      "red": "#ae8289",
+      "green": "#97b8a2",
+      "yellow": "#bcb189",
+      "blue": "#93aacb",
+      "purple": "#a79fc4",
+      "cyan": "#8bb4bd",
+      "white": "#b3b8c7",
+      "brightBlack": "#5b6070",
+      "brightRed": "#c8a4a9",
+      "brightGreen": "#b7cfbf",
+      "brightYellow": "#d3caac",
+      "brightBlue": "#b5c5dd",
+      "brightPurple": "#c2bbd8",
+      "brightCyan": "#aeccd2",
+      "brightWhite": "#e7e9f0",
+      "background": "#111218",
+      "foreground": "#ccd0dd",
+      "cursorColor": "#93aacb",
+      "selectionBackground": "#1f242b"
+    }
+  ]
+}

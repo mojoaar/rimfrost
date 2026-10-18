@@ -1,0 +1,27 @@
+{
+  "schemes": [
+    {
+      "name": "Nordlys",
+      "black": "#0d1020",
+      "red": "#b06678",
+      "green": "#6ee0a8",
+      "yellow": "#cbb168",
+      "blue": "#7fa8ee",
+      "purple": "#ab93e4",
+      "cyan": "#63cfe0",
+      "white": "#aab6d1",
+      "brightBlack": "#596586",
+      "brightRed": "#cb8c99",
+      "brightGreen": "#9eebc4",
+      "brightYellow": "#decc95",
+      "brightBlue": "#a6c3f4",
+      "brightPurple": "#c4b3ed",
+      "brightCyan": "#97dfeb",
+      "brightWhite": "#e6ebf6",
+      "background": "#0b1020",
+      "foreground": "#ccd8ee",
+      "cursorColor": "#6ee0a8",
+      "selectionBackground": "#192336"
+    }
+  ]
+}

@@ -13,6 +13,9 @@ import { exportAll } from "../src/export.mjs";
 import { exportGhostty } from "../src/export-ghostty.mjs";
 import { exportAlacritty } from "../src/export-alacritty.mjs";
 import { exportIterm } from "../src/export-iterm.mjs";
+import { exportFoot } from "../src/export-foot.mjs";
+import { exportWindowsterminal } from "../src/export-windowsterminal.mjs";
+import { exportTerminal } from "../src/export-terminal.mjs";
 import { HUES } from "../src/contract.mjs";
 import { render } from "../tools/preview.mjs";
 
@@ -25,12 +28,18 @@ const OPENCODE = join(ROOT, "opencode", "dist");
 const GHOSTTY = join(ROOT, "ghostty", "dist");
 const ALACRITTY = join(ROOT, "alacritty", "dist");
 const ITERM = join(ROOT, "iterm", "dist");
+const FOOT = join(ROOT, "foot", "dist");
+const WINDOWSTERMINAL = join(ROOT, "windowsterminal", "dist");
+const TERMINAL = join(ROOT, "terminal", "dist");
 const TOKENS = join(ROOT, "web", "dist", "tokens");
 const PREVIEW = join(ROOT, "web", "dist", "preview");
 const { themes, errors } = exportAll({ palettesDir: PALETTES, outDir: OPENCODE, tokensDir: TOKENS });
 exportGhostty({ themesDir: OPENCODE, outDir: GHOSTTY });
 exportAlacritty({ themesDir: OPENCODE, outDir: ALACRITTY });
 exportIterm({ themesDir: OPENCODE, outDir: ITERM });
+exportFoot({ themesDir: OPENCODE, outDir: FOOT });
+exportWindowsterminal({ themesDir: OPENCODE, outDir: WINDOWSTERMINAL });
+exportTerminal({ themesDir: OPENCODE, outDir: TERMINAL });
 render({ tokensDir: TOKENS, outDir: PREVIEW });
 const tokens = JSON.parse(readFileSync(join(TOKENS, "tokens.json"), "utf8"));
 
@@ -110,6 +119,9 @@ test("dist/ holds exactly what a fresh build writes", () => {
     ...themes.flatMap((name) => [`ghostty/dist/${cap(name)}`, `ghostty/dist/${cap(name)} Light`]),
     ...themes.flatMap((name) => [`alacritty/dist/${name}.toml`, `alacritty/dist/${name}-light.toml`]),
     ...themes.flatMap((name) => [`iterm/dist/${cap(name)}.json`, `iterm/dist/${cap(name)} Light.json`]),
+    ...themes.flatMap((name) => [`terminal/dist/${cap(name)}.terminal`, `terminal/dist/${cap(name)} Light.terminal`]),
+    ...themes.flatMap((name) => [`windowsterminal/dist/${cap(name)}.json`, `windowsterminal/dist/${cap(name)} Light.json`]),
+    ...themes.map((name) => `foot/dist/${name}.ini`),
     ...themes.map((name) => `web/dist/preview/${name}.html`),
     "web/dist/preview/index.html",
   ];

@@ -1,0 +1,27 @@
+{
+  "schemes": [
+    {
+      "name": "Ravn Light",
+      "black": "#e2e1e9",
+      "red": "#77393f",
+      "green": "#2f6349",
+      "yellow": "#6d5b21",
+      "blue": "#2c5f80",
+      "purple": "#514173",
+      "cyan": "#22646f",
+      "white": "#585668",
+      "brightBlack": "#a3a1b1",
+      "brightRed": "#5d2c33",
+      "brightGreen": "#224c39",
+      "brightYellow": "#544619",
+      "brightBlue": "#1f4763",
+      "brightPurple": "#3e315d",
+      "brightCyan": "#174c57",
+      "brightWhite": "#2b2936",
+      "background": "#e2e1e9",
+      "foreground": "#2b2936",
+      "cursorColor": "#514173",
+      "selectionBackground": "#d0cfda"
+    }
+  ]
+}

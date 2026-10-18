@@ -1,0 +1,27 @@
+{
+  "schemes": [
+    {
+      "name": "Ravn",
+      "black": "#0a0b12",
+      "red": "#a2626d",
+      "green": "#74a98d",
+      "yellow": "#bda96a",
+      "blue": "#7d9cd6",
+      "purple": "#a596d8",
+      "cyan": "#6fb3c4",
+      "white": "#a9b2c4",
+      "brightBlack": "#545b6c",
+      "brightRed": "#c18890",
+      "brightGreen": "#9dc6af",
+      "brightYellow": "#d4c596",
+      "brightBlue": "#a4bae3",
+      "brightPurple": "#c0b5e4",
+      "brightCyan": "#9bccd8",
+      "brightWhite": "#e4e8f0",
+      "background": "#0a0b12",
+      "foreground": "#c9d1e2",
+      "cursorColor": "#a596d8",
+      "selectionBackground": "#191e27"
+    }
+  ]
+}
