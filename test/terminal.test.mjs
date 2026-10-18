@@ -46,6 +46,9 @@ const bytesOf = (blob) =>
     .replace(/\0$/, "").split(" ")
     .map((part) => Math.round(parseFloat(part) * 255));
 const hexOf = (blob) => `#${bytesOf(blob).map((b) => b.toString(16).padStart(2, "0")).join("")}`;
+/** The exact payload the archive must carry: three components at ten decimals, NUL-terminated. */
+const payloadOf = (hex) =>
+  `${[1, 3, 5].map((i) => (parseInt(hex.slice(i, i + 2), 16) / 255).toFixed(10)).join(" ")}\0`;
 const ANSI = ["red", "green", "yellow", "blue", "purple", "cyan"];
 const SLOTS = [
   ["gray", "900"], ...ANSI.map((hue) => [hue, "300"]), ["gray", "300"],
@@ -112,6 +115,16 @@ test("every slot is the ramp step the design names", () => {
       expected,
       `${file} does not match the mapping`,
     );
+    // Pin the payload's exact text, not just its round trip: a moved offset or
+    // a narrower format still parses back to the same bytes, but every offset
+    // after it in the archive has shifted, so the file is corrupt.
+    for (const [key, blob] of entries(file)) {
+      assert.equal(
+        blob.subarray(PAYLOAD_AT, PAYLOAD_AT + PAYLOAD_LENGTH).toString("latin1"),
+        payloadOf(expected[key]),
+        `${file} ${key} payload is not the fixed-width ${PAYLOAD_LENGTH} bytes at ${PAYLOAD_AT}`,
+      );
+    }
   }
 });
 

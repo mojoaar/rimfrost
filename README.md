@@ -159,9 +159,10 @@ profiles — Terminal.app has no light/dark pairing, so which one you get is whi
 your default profile. Importing a profile whose name you already have adds a second copy, so
 delete the old one first if you are re-importing.
 
-Neither profile carries a colour for selected text, because Terminal.app has no setting for it, and
-the cursor colour is the theme's accent in both. Anything a real export carries that these do not —
-font, blur, window size — falls back to Terminal.app's defaults.
+The selection highlight is set the same way every other target sets it, but neither profile carries a
+colour for the *text* of a selection — Terminal.app has no setting for that — and the cursor colour
+is the theme's accent in both. Anything a real export carries that these do not — font, blur,
+window size — falls back to Terminal.app's defaults.
 
 ## Install in Windows Terminal
 
@@ -174,7 +175,7 @@ New-Item -ItemType Directory -Force $dir
 Copy-Item windowsterminal/dist/*.json $dir
 ```
 
-Windows Terminal reads fragments at startup, so reopen it. The four schemes then appear in the
+Windows Terminal reads fragments at startup, so reopen it. The eight schemes then appear in the
 colour-scheme picker. To follow the system appearance with one profile, add the pairing to that
 profile in `settings.json` — the schemes themselves cannot set it, and this needs Windows Terminal
 1.18 or newer:
@@ -313,7 +314,7 @@ Building from source needs Node 20.19+ and nothing else — there are no depende
 npm run build                  # validate and write opencode/dist/<name>.json
 node src/build.mjs --install   # …and copy to ~/.config/opencode/themes/
 npm test                       # the whole suite: values, ramps, contrast, every target
-npm run export                 # every target: opencode/dist/, the five terminals, web/dist/tokens/
+npm run export                 # every target: opencode/dist/, the six terminals, web/dist/tokens/
 npm run preview                # web/dist/preview/
 ```
 
