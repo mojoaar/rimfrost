@@ -5,7 +5,7 @@ All notable changes to this pack. The format follows
 [SemVer](https://semver.org) read as a design-token API: a colour retune is a **patch**, because
 consumers bind to token names rather than to exact hex.
 
-## [Unreleased]
+## [1.2.0] — 2026-10-18
 
 ### Added
 
