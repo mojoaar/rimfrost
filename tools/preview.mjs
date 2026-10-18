@@ -39,7 +39,7 @@ const step = (theme, hue, name) => theme.ramps[hue][name];
  */
 function panel(name, mode, t) {
   const terminal = [
-    span(`color:${tok(t, "markdown.heading")}`, "## Nordic themes"),
+    span(`color:${tok(t, "markdown.heading")}`, "## The four themes"),
     `This is body text on the ${mode} background.`,
     span(`color:${tok(t, "text.muted")}`, "A quieter line, for descriptions and hints."),
     `run ${span(`color:${tok(t, "markdown.code")}`, "npm test")} then read ${span(`color:${tok(t, "markdown.link")}`, "the design notes")}`,
@@ -100,7 +100,7 @@ const written = [];
 
 for (const name of names) {
   const html = page(
-    `nordic themes — ${name}`,
+    `rimfrost — ${name}`,
     ["dark", "light"].map((mode) => panel(name, mode, themes[name][mode])),
   );
   writeFileSync(join(OUT, `${name}.html`), html);
@@ -108,7 +108,7 @@ for (const name of names) {
 }
 
 const hero = page(
-  "nordic themes",
+  "rimfrost",
   names.flatMap((name) => ["dark", "light"].map((mode) => panel(name, mode, themes[name][mode]))),
 );
 writeFileSync(join(OUT, "index.html"), hero);
