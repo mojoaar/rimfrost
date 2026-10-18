@@ -9,6 +9,7 @@
     "export": "node src/export.mjs && node src/export-ghostty.mjs",
     "export:ghostty": "node src/export-ghostty.mjs",
     "export:alacritty": "node src/export-alacritty.mjs",
+    "export:iterm": "node src/export-iterm.mjs",
     "preview": "node tools/preview.mjs",
     "check:loader": "node tools/check-loader.mjs"
   }
