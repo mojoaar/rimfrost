@@ -5,6 +5,15 @@ All notable changes to this pack. The format follows
 [SemVer](https://semver.org) read as a design-token API: a colour retune is a **patch**, because
 consumers bind to token names rather than to exact hex.
 
+## [Unreleased]
+
+### Added
+
+- **Alacritty** and **iTerm2** as terminal targets: `alacritty/dist/*.toml` and
+  `iterm/dist/*.json`, from the same sixteen ANSI slots as the Ghostty palettes. Alacritty
+  imports one file; iTerm2 picks a dynamic profile up from its own folder. Terminals have no
+  orange slot, so orange does not reach either of them.
+
 ## [1.0.0] — 2026-10-18
 
 First release, under its own name and in its own repository.

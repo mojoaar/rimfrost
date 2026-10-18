@@ -3,13 +3,14 @@
 **Cold, not grey.**
 
 An **unofficial** theme pack. One set of colours, exported for the tools you use —
-[OpenCode](https://opencode.ai) theme JSON, [Ghostty](https://ghostty.org) sixteen-colour
-palettes, and CSS custom properties for the web. Four Danish words — fjord, ravn, nordlys,
-skumring — telling one day in one cold place, each with a dark mode and a light one.
+[OpenCode](https://opencode.ai) theme JSON, [Ghostty](https://ghostty.org),
+[Alacritty](https://alacritty.org) and [iTerm2](https://iterm2.com) sixteen-colour palettes, and
+CSS custom properties for the web. Four Danish words — fjord, ravn, nordlys, skumring — telling
+one day in one cold place, each with a dark mode and a light one.
 
 Every target comes out of the same eleven ramps rather than being hand-made: OpenCode takes the
-theme JSON, Ghostty takes the sixteen ANSI slots, a web page takes the CSS. More targets slot in
-the same way.
+theme JSON, the terminals take the sixteen ANSI slots, a web page takes the CSS. More targets slot
+in the same way.
 
 Rimfrost is the frost that forms on a clear, still night. It needs open sky and no wind, which is
 why the nights that grow it are the nights you see the aurora. The word is Danish; it is also
@@ -78,6 +79,47 @@ Terminals have no orange slot, so the pack's orange is the one colour that does 
 target. The palette is otherwise the same eleven ramps mapped onto the sixteen ANSI slots:
 normal colours at step `300`, bright at `200` — which is *darker* in light mode, because the
 ramps flip.
+
+## Install in Alacritty
+
+`npm run export` writes the same sixteen-colour palettes as TOML into
+[`alacritty/dist/`](alacritty/dist), one file per theme per mode:
+
+```sh
+cp alacritty/dist/*.toml ~/.config/alacritty/
+```
+
+Then point Alacritty at one, in `~/.config/alacritty/alacritty.toml`:
+
+```toml
+[general]
+import = ["~/.config/alacritty/fjord.toml"]
+```
+
+Each entry adds a file, and pasting a file's contents into `alacritty.toml` works just as well.
+On Alacritty 0.13 the key is a top-level `import = [...]` instead of one under `[general]`;
+0.14 and later warn about that form, and `alacritty migrate` rewrites it.
+
+The colours are the same sixteen ANSI slots as the Ghostty palettes — normal at step `300`,
+bright at `200`, which is *darker* in light mode because the ramps flip. Orange has no slot.
+
+## Install in iTerm2
+
+The same export writes one iTerm2 dynamic profile per theme per mode into
+[`iterm/dist/`](iterm/dist) — the same colours as iTerm2's own colour values:
+
+```sh
+cp iterm/dist/*.json ~/Library/Application\ Support/iTerm2/DynamicProfiles/
+```
+
+iTerm2 watches that folder, so the profiles appear in the profile list tagged **Dynamic**
+without a restart and without an import dialog. Pick one from the profile list; making it the
+default is a step of its own, because iTerm2 keeps its default in preferences rather than in a
+profile.
+
+iTerm2 has slots the other targets do not — a link colour, an underline colour, a cursor guide
+and a badge — so those are set from the pack too rather than left at iTerm2's defaults. Orange is
+still absent: sixteen slots, no orange.
 
 ## Install in CSS
 
@@ -174,6 +216,8 @@ keeps its hue instead of drifting through grey. Everything else in the file is b
 ```
 opencode/            the OpenCode target — dist/<name>.json
 ghostty/             the Ghostty target — dist/<Name>, dist/<Name> Light
+alacritty/           the Alacritty target — dist/<name>.toml, dist/<name>-light.toml
+iterm/               the iTerm2 target — dist/<Name>.json, dist/<Name> Light.json
 web/                 the web target — dist/tokens/, dist/preview/
 src/
   contract.mjs       the token tree and the value rules
@@ -184,6 +228,8 @@ src/
   build.mjs          validate, write opencode/dist/<name>.json, --install
   export.mjs         write opencode/dist/ and web/dist/tokens/
   export-ghostty.mjs opencode/dist/ → ghostty/dist/
+  export-alacritty.mjs opencode/dist/ → alacritty/dist/
+  export-iterm.mjs   opencode/dist/ → iterm/dist/
   palettes/          the four themes — one file each
 tools/               dev-only: preview renderer, loader check
 test/                node:test, palette-agnostic
@@ -196,7 +242,7 @@ Building from source needs Node 20.19+ and nothing else — there are no depende
 npm run build                  # validate and write opencode/dist/<name>.json
 node src/build.mjs --install   # …and copy to ~/.config/opencode/themes/
 npm test                       # the whole suite: values, ramps, contrast, every target
-npm run export                 # opencode/dist/, ghostty/dist/ and web/dist/tokens/
+npm run export                 # every target: opencode/dist/, ghostty/dist/, alacritty/dist/, iterm/dist/, web/dist/tokens/
 npm run preview                # web/dist/preview/
 ```
 
@@ -210,6 +256,6 @@ held to the contrast floors above.
 
 ## Licence
 
-[MIT](LICENSE). Everything under `opencode/dist/`, `ghostty/dist/` and `web/dist/` is yours to use however you like.
+[MIT](LICENSE). Everything under `opencode/dist/`, `ghostty/dist/`, `alacritty/dist/`, `iterm/dist/` and `web/dist/` is yours to use however you like.
 
 Not affiliated with, endorsed by, or part of the OpenCode project.
