@@ -11,6 +11,7 @@
     "export:alacritty": "node src/export-alacritty.mjs",
     "export:iterm": "node src/export-iterm.mjs",
     "export:foot": "node src/export-foot.mjs",
+    "export:windowsterminal": "node src/export-windowsterminal.mjs",
     "preview": "node tools/preview.mjs",
     "check:loader": "node tools/check-loader.mjs"
   }
