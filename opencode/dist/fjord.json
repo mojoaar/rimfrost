@@ -1,6 +1,6 @@
 {
   "$schema": "https://opencode.ai/theme.json",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "base": {
     "text": {
       "base": "#c6d4e0",
