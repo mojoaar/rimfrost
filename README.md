@@ -3,10 +3,13 @@
 **Cold, not grey.**
 
 An **unofficial** theme pack. One set of colours, exported for the tools you use —
-[OpenCode](https://opencode.ai) theme JSON, [Ghostty](https://ghostty.org),
-[Alacritty](https://alacritty.org) and [iTerm2](https://iterm2.com) sixteen-colour palettes, and
-CSS custom properties for the web. Four Danish words — fjord, ravn, nordlys, skumring — telling
-one day in one cold place, each with a dark mode and a light one.
+[OpenCode](https://opencode.ai) theme JSON, sixteen-colour palettes for
+[Ghostty](https://ghostty.org), [Alacritty](https://alacritty.org),
+[iTerm2](https://iterm2.com), [Terminal.app](https://support.apple.com/guide/terminal/welcome/mac),
+[Windows Terminal](https://learn.microsoft.com/en-us/windows/terminal/) and
+[foot](https://codeberg.org/dnkl/foot), and CSS custom properties for the web. Four Danish words —
+fjord, ravn, nordlys, skumring — telling one day in one cold place, each with a dark mode and a
+light one.
 
 Every target comes out of the same eleven ramps rather than being hand-made: OpenCode takes the
 theme JSON, the terminals take the sixteen ANSI slots, a web page takes the CSS. More targets slot
@@ -144,6 +147,68 @@ Tailwind v4 and anything else that reads custom properties needs no further arti
 interaction states (`$hovered`, `$focused`, …) are deliberately not exported — they are UI
 behaviour, not colour.
 
+## Install in Terminal.app
+
+```sh
+cp terminal/dist/*.terminal ~/Downloads/     # or wherever you keep them
+```
+
+Then in Terminal, **Settings… → Profiles**, and either drag the two files from Finder onto the
+profile list or use the gear menu's **Import…**. `Fjord` and `Fjord Light` are two separate
+profiles — Terminal.app has no light/dark pairing, so which one you get is which one you pick as
+your default profile. Importing a profile whose name you already have adds a second copy, so
+delete the old one first if you are re-importing.
+
+Neither profile carries a colour for selected text, because Terminal.app has no setting for it, and
+the cursor colour is the theme's accent in both. Anything a real export carries that these do not —
+font, blur, window size — falls back to Terminal.app's defaults.
+
+## Install in Windows Terminal
+
+The schemes ship as a [fragment](https://learn.microsoft.com/en-us/windows/terminal/json-fragment-extensions),
+so nothing in your `settings.json` is rewritten:
+
+```powershell
+$dir = "$env:LOCALAPPDATA\Microsoft\Windows Terminal\Fragments\rimfrost"
+New-Item -ItemType Directory -Force $dir
+Copy-Item windowsterminal/dist/*.json $dir
+```
+
+Windows Terminal reads fragments at startup, so reopen it. The four schemes then appear in the
+colour-scheme picker. To follow the system appearance with one profile, add the pairing to that
+profile in `settings.json` — the schemes themselves cannot set it, and this needs Windows Terminal
+1.18 or newer:
+
+```json
+"colorScheme": { "light": "Fjord Light", "dark": "Fjord" }
+```
+
+There is no selection-foreground key in the format, so Windows Terminal picks that colour itself.
+
+## Install in foot
+
+Each file carries **both** modes, so one file is the whole theme:
+
+```sh
+mkdir -p ~/.config/foot/themes
+cp foot/dist/*.ini ~/.config/foot/themes/
+```
+
+Then pull one in from your own `~/.config/foot/foot.ini` — `include=` needs a literal path, with
+no glob:
+
+```ini
+[main]
+include=~/.config/foot/themes/fjord.ini
+initial-color-theme=dark
+```
+
+foot does not follow your desktop's appearance, so the light half sits there until you switch to
+it: bind `color-theme-toggle` (or send foot `SIGUSR2` for light, `SIGUSR1` for dark), or start with
+`initial-color-theme=light`. The `[colors-dark]`/`[colors-light]` sections and the `-dark`/`-light`
+binding names need foot 1.26 or newer — before that, foot used `[colors]`/`[colors2]` and cannot
+read these files at all.
+
 ## The four themes
 
 One day in one cold place.
@@ -218,6 +283,9 @@ opencode/            the OpenCode target — dist/<name>.json
 ghostty/             the Ghostty target — dist/<Name>, dist/<Name> Light
 alacritty/           the Alacritty target — dist/<name>.toml, dist/<name>-light.toml
 iterm/               the iTerm2 target — dist/<Name>.json, dist/<Name> Light.json
+terminal/            the macOS Terminal.app target — dist/<Name>.terminal
+windowsterminal/     the Windows Terminal target — dist/<Name>.json, dist/<Name> Light.json
+foot/                the foot target — dist/<name>.ini, both modes in each
 web/                 the web target — dist/tokens/, dist/preview/
 src/
   contract.mjs       the token tree and the value rules
@@ -230,6 +298,9 @@ src/
   export-ghostty.mjs opencode/dist/ → ghostty/dist/
   export-alacritty.mjs opencode/dist/ → alacritty/dist/
   export-iterm.mjs   opencode/dist/ → iterm/dist/
+  export-terminal.mjs opencode/dist/ → terminal/dist/
+  export-windowsterminal.mjs opencode/dist/ → windowsterminal/dist/
+  export-foot.mjs     opencode/dist/ → foot/dist/
   palettes/          the four themes — one file each
 tools/               dev-only: preview renderer, loader check
 test/                node:test, palette-agnostic
@@ -242,7 +313,7 @@ Building from source needs Node 20.19+ and nothing else — there are no depende
 npm run build                  # validate and write opencode/dist/<name>.json
 node src/build.mjs --install   # …and copy to ~/.config/opencode/themes/
 npm test                       # the whole suite: values, ramps, contrast, every target
-npm run export                 # every target: opencode/dist/, ghostty/dist/, alacritty/dist/, iterm/dist/, web/dist/tokens/
+npm run export                 # every target: opencode/dist/, the five terminals, web/dist/tokens/
 npm run preview                # web/dist/preview/
 ```
 
@@ -256,6 +327,6 @@ held to the contrast floors above.
 
 ## Licence
 
-[MIT](LICENSE). Everything under `opencode/dist/`, `ghostty/dist/`, `alacritty/dist/`, `iterm/dist/` and `web/dist/` is yours to use however you like.
+[MIT](LICENSE). Everything under `opencode/dist/`, `ghostty/dist/`, `alacritty/dist/`, `iterm/dist/`, `terminal/dist/`, `windowsterminal/dist/`, `foot/dist/` and `web/dist/` is yours to use however you like.
 
 Not affiliated with, endorsed by, or part of the OpenCode project.

@@ -1,15 +1,19 @@
 # AGENTS.md
 
 Agent guidance for this repo. It ships one colour configuration per tool, all out of one set of
-palettes: today **OpenCode**, **Ghostty**, **Alacritty** and **iTerm2**, with **web** alongside them
-because the CSS export is free once the ramps exist. More targets are expected; the six things a
-new one needs are listed under *What a target costs* below.
+palettes: today **OpenCode**, **Ghostty**, **Alacritty**, **iTerm2**, **Terminal.app**, **Windows
+Terminal** and **foot**, with **web** alongside them because the CSS export is free once the ramps
+exist. More targets are expected; the six things a new one needs are listed under *What a target
+costs* below.
 
 ```
 opencode/        the OpenCode target — dist/<name>.json
 ghostty/         the Ghostty target — dist/<Name>, dist/<Name> Light
 alacritty/        the Alacritty target — dist/<name>.toml, dist/<name>-light.toml
 iterm/            the iTerm2 target — dist/<Name>.json, dist/<Name> Light.json
+terminal/        the macOS Terminal.app target — dist/<Name>.terminal
+windowsterminal/  the Windows Terminal target — dist/<Name>.json, dist/<Name> Light.json
+foot/            the foot target — dist/<name>.ini, both modes in each
 web/             the web target — dist/tokens/ (CSS + JSON), dist/preview/
 src/             contract → color → ramp → theme → validate → build, plus the exporters
 src/palettes/    the four themes; hand-authored data, one file per theme
@@ -30,10 +34,13 @@ building a second time, so a Ghostty palette is always the same bytes the OpenCo
 | `npm run build` | one `<name>: ok` line per theme, exit 0 |
 | `node src/build.mjs --install` | same, and copies to `~/.config/opencode/themes/` |
 | `npm run check:loader` | `<file>: light OK` and `dark OK` for every `opencode/dist/*.json`. **Pipe it**: `npm run check:loader 2>&1 \| grep -E "OK\|FAIL\|could not\|Error:"` — on failure Node prints the whole extracted resolver source |
-| `npm run export` | `opencode/dist/`, then `ghostty/dist/`, `alacritty/dist/`, `iterm/dist/` and `web/dist/tokens/`. All four exporters, in order — which is why the `&&` in the script is load-bearing: each reads what the one before wrote |
+| `npm run export` | `opencode/dist/`, then `ghostty/dist/`, `alacritty/dist/`, `iterm/dist/`, `terminal/dist/`, `windowsterminal/dist/`, `foot/dist/` and `web/dist/tokens/`. All seven exporters, in order — which is why the `&&` in the script is load-bearing: each reads what the one before wrote |
 | `npm run export:ghostty` | `ghostty/dist/` alone; it needs an `opencode/dist/` that is already built |
 | `npm run export:alacritty` | `alacritty/dist/` alone; it needs an `opencode/dist/` that is already built |
 | `npm run export:iterm` | `iterm/dist/` alone; it needs an `opencode/dist/` that is already built |
+| `npm run export:terminal` | `terminal/dist/` alone; it needs an `opencode/dist/` that is already built |
+| `npm run export:windowsterminal` | `windowsterminal/dist/` alone; it needs an `opencode/dist/` that is already built |
+| `npm run export:foot` | `foot/dist/` alone; it needs an `opencode/dist/` that is already built |
 | `npm run preview` | `web/dist/preview/*.html`, after `npm run export` |
 
 Run the first three together before calling any palette change done.
@@ -75,8 +82,9 @@ surfaces): body text 4.5:1, muted text and every `syntax.*` / `diff.text.*` 3:1.
 get green is not a fix.
 
 **No orange in a terminal.** ANSI has sixteen slots and none of them is orange, so orange is the
-one ramp that does not reach `ghostty/dist/`, `alacritty/dist/` or `iterm/dist/`. That is the
-format's limit, not an omission — a test pins it so orange cannot drift back in.
+one ramp that does not reach `ghostty/dist/`, `alacritty/dist/`, `iterm/dist/`,
+`terminal/dist/`, `windowsterminal/dist/` or `foot/dist/`. That is the format's limit, not an
+omission — a test pins it so orange cannot drift back in.
 
 **iTerm2's colour values are dicts, and its Guids must not move.** Every value in
 `iterm/dist/*.json` is an NSColor dict (`Red`/`Green`/`Blue Component` as 0–1 floats, `sRGB`,
@@ -115,17 +123,19 @@ never compared against a fresh build, so it can go stale while the suite stays g
 
 ## Committed build output
 
-All five target folders **are committed**, because they are what people download: a TUI user
+All eight target folders **are committed**, because they are what people download: a TUI user
 takes `opencode/dist/fjord.json`, a Ghostty user takes `ghostty/dist/Fjord`, an Alacritty user
-takes `alacritty/dist/fjord.toml`, an iTerm2 user takes `iterm/dist/Fjord.json`, a web dev takes
-`web/dist/tokens/`. So a palette change is not finished until the output is regenerated and
-committed — `npm run export` rebuilds all five, and `npm run preview` then refreshes the preview
-pages.
+takes `alacritty/dist/fjord.toml`, an iTerm2 user takes `iterm/dist/Fjord.json`, a macOS user takes
+`terminal/dist/Fjord.terminal`, a Windows user takes `windowsterminal/dist/Fjord.json`, a foot user
+takes `foot/dist/fjord.ini`, a web dev takes `web/dist/tokens/`. So a palette change is not
+finished until the output is regenerated and committed — `npm run export` rebuilds all eight, and
+`npm run preview` then refreshes the preview pages.
 
 The test `dist/ holds exactly what a fresh build writes` byte-compares every committed build
 artifact against a fresh build, so a forgotten `npm run export` — or `npm run preview`, for the
 pages — fails the suite. Its `files` list is repo-root-relative (`opencode/dist/…`,
-`ghostty/dist/…`, `alacritty/dist/…`, `iterm/dist/…`, `web/dist/tokens/…`, `web/dist/preview/…`):
+`ghostty/dist/…`, `alacritty/dist/…`, `iterm/dist/…`, `terminal/dist/…`,
+`windowsterminal/dist/…`, `foot/dist/…`, `web/dist/tokens/…`, `web/dist/preview/…`):
 new output that is not added to that list is unwatched while the suite stays green.
 
 ## Do not touch

@@ -5,6 +5,17 @@ All notable changes to this pack. The format follows
 [SemVer](https://semver.org) read as a design-token API: a colour retune is a **patch**, because
 consumers bind to token names rather than to exact hex.
 
+## [Unreleased]
+
+### Added
+
+- **Terminal.app**, **Windows Terminal** and **foot** as three more targets. `npm run export` now
+  writes `terminal/dist/*.terminal`, `windowsterminal/dist/*.json` and `foot/dist/*.ini` alongside
+  the rest, so the same colours reach eight target folders.
+- Neither Terminal.app nor Windows Terminal has a selection-foreground slot, so each picks that
+  colour itself. foot needs 1.26 or newer: its `[colors-dark]`/`[colors-light]` sections replaced
+  `[colors]`/`[colors2]`, which were removed in 1.28.
+
 ## [1.1.0] — 2026-10-18
 
 ### Added
